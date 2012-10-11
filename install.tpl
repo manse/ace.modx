@@ -9,5 +9,7 @@
  **/
 
 global $modx, $content;
-$plugin_base = 'assets/plugins/ace/';
+$plugin_base = 'assets/plugins/ACE/';
 require MODX_BASE_PATH . $plugin_base . 'bootstrap.php';
+
+
