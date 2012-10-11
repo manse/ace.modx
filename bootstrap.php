@@ -4,7 +4,7 @@ $e = $modx->event;
 
 if ($e->name === 'OnRichTextEditorRegister') {
 	$e->output('ACE');
-} else {
+} elseif (is_file(MODX_BASE_PATH . $plugin_base . '/plugin.js')) {
 	$e->output('<!-- ACE Plugin -->' . "\n");
 	$prte = (isset($_POST['which_editor']) ? $_POST['which_editor'] : false);
 	$srte = ($modx->config['which_editor'] ? $modx->config['which_editor'] : false);
@@ -53,15 +53,15 @@ if ($e->name === 'OnRichTextEditorRegister') {
 	}
 	
 	if ($rte === 'ACE') {
-		$e->output('<link rel="stylesheet" type="text/css" href="../' . $plugin_base . '/style.css" />' . "\n");
-		$e->output('<script type="text/javascript" src="../' . $plugin_base . '/src-min/ace.js"></script>' . "\n");
+		$e->output('<link rel="stylesheet" type="text/css" href="' . $modx->config['base_url'] . $plugin_base . '/style.css" />' . "\n");
+		$e->output('<script type="text/javascript" src="' . $modx->config['base_url'] . $plugin_base . '/src-min/ace.js"></script>' . "\n");
 		$e->output('<script type="text/javascript">' . "\n");
 		$e->output('(function() {' . "\n");
 		$e->output('var uilang = "' . addslashes($modx->config['manager_language']) . '";');
 		$e->output('var ename = "' . $e->name . '";' . "\n");
 		$e->output('var id = "' . intval($_GET['a']) . '_' . intval($_GET['id']) . '_";' . "\n");
 		$e->output('var language = "' . $lang . '";' . "\n");
-		$e->output(file_get_contents('../' . $plugin_base . '/plugin.js'));
+		$e->output(file_get_contents(MODX_BASE_PATH . $plugin_base . '/plugin.js'));
 		$e->output('})();' . "\n");
 		$e->output('</script>' . "\n");
 	}
