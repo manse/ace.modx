@@ -40,18 +40,23 @@ var conf = new (function() {
 })();
 
 /**
- * hide original textarea
+ * reference original textarea
  **/
-var ta;
-ta = document.getElementById("ta");
+var ta = document.getElementById("ta");
 if (!ta) {
 	ta = document.getElementsByName("post")[0];
-	if (!ta) {
-		return;
-	}
+	if (!ta) return;
 }
-ta.style.width = ta.style.height = ta.style.padding = ta.style.margin = ta.style.border = ta.style.outline = ta.style.opacity = "0";
-ta.style.marginTop = "-50px";
+if (ta.tagName != "TEXTAREA") return;
+
+/**
+ * hide original textarea
+ **/
+ta.style.position = "fixed";
+ta.style.left = "-999em";
+ta.style.width = ta.style.height = "100px";
+ta.style.top = "0";
+
 
 /**
  * embed ACE
@@ -74,9 +79,7 @@ if (ta.nextSibling) {
 } else {
 	ta.parentNode.appendChild(container);
 }
-
 editor = ace.edit("ta_inner");
-
 
 
 /**
@@ -180,18 +183,19 @@ tb.appendChild(theme);
 
 //font size
 var size = document.createElement("select");
-var sizes = [11,12,13,14,15,16];
+var sizes = [11,12,13,14,15];
 size.onchange = function() {
 	var value = size.options[size.selectedIndex].value;
+	outer.style.lineHeight = parseInt(value) + 2 + "px";
 	conf.set("size", value);
-	editor.setFontSize(value);
+	editor.setFontSize(value + "px");
 };
-var sizeDefaultValue = conf.get("size", "14px");
+var sizeDefaultValue = conf.get("size", 12);
 for (var i = 0; i < sizes.length; i ++) {
 	var opt = document.createElement("option");
-	var value = sizes[i] + "px";
+	var value = sizes[i];
 	opt.setAttribute("value", value);
-	opt.appendChild(document.createTextNode(value));
+	opt.appendChild(document.createTextNode(value + "px"));
 	if (sizeDefaultValue == value) {
 		opt.setAttribute("selected", "selected");
 	}
@@ -231,7 +235,7 @@ full.onchange = function() {
 	}
 	editor.resize();
 };
-full.onchange();
+setTimeout(full.onchange, 50);
 var fulllabel = document.createElement("label");
 fulllabel.appendChild(full);
 fulllabel.appendChild(document.createTextNode(uilang.full));
@@ -309,12 +313,21 @@ knob.onmousedown = function(e) {
 var session = editor.getSession();
 var selection = session.getSelection();
 
+selection.moveCursorTo(parseInt(conf.get(id + "row", 0)), parseInt(conf.get(id + "col", 0)), false);
+session.setScrollLeft(parseInt(conf.get(id + "scrollx", 0)));
+session.setScrollTop(parseInt(conf.get(id + "scrolly", 0)));
+
+editor.setShowPrintMargin(false);
+session.setUseSoftTabs(false);
+session.setUseWrapMode(true);
+
 editor.on("blur", function(e) {
 	ta.focus();
 	ta.blur();
 });
-editor.on("change", function(e) {
+editor.on("change", function() {
 	ta.value = editor.getValue();
+	documentDirty = true;
 });
 session.on("changeScrollLeft", function() {
 	conf.set(id + "scrollx", session.getScrollLeft());
@@ -328,23 +341,17 @@ selection.on("changeCursor", function() {
 	conf.set(id + "row", e.row);
 });
 
-session.setScrollLeft(parseInt(conf.get(id + "scrollx", 0)));
-session.setScrollTop(parseInt(conf.get(id + "scrolly", 0)));
-selection.moveCursorTo(parseInt(conf.get(id + "row", 0)), parseInt(conf.get(id + "col", 0)), false);
-
-editor.setShowPrintMargin(false);
-session.setUseSoftTabs(false);
-session.setUseWrapMode(true);
-
 
 /**
  * keybind
  **/
 var HashHandler = require("ace/keyboard/hash_handler").HashHandler;
 var handler = new HashHandler();
+//Please extend this.
 var commands = {
 	s: function() {
 		var node = container.parentNode;
+		documentDirty = false;
 		while(node) {
 			if (node.tagName == "FORM") {
 				node.action += "#ace";
