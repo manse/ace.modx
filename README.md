@@ -1,10 +1,10 @@
-# ACE for MODX Revo
+# ACE for MODX Evo
 
-Add a rich text editor ACE for MODX Revo.
+Add a rich text editor ACE for MODX Evo.
 
 ## Requirements
 
- * MODX Revolution 1.0.5 or greater.
+ * MODX Evolution 1.0.5 or greater.
 
 ## Installation
 

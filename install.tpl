@@ -2,7 +2,7 @@
 /**
  * ACE
  * 
- * Add a rich text editor ACE for MODX Revo.
+ * Add a rich text editor ACE for MODX Evo.
  * @author	 Ryota Mannari <info@manse.jp>
  * @events OnChunkFormRender, OnDocFormRender, OnModFormRender, OnSnipFormRender, OnTempFormRender, OnPluginFormRender, OnRichTextEditorRegister
  * @modx_category Manager and Admin
