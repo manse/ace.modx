@@ -53,8 +53,8 @@ if ($e->name === 'OnRichTextEditorRegister') {
 	}
 	
 	if ($rte === 'ACE') {
-		$e->output('<link rel="stylesheet" type="text/css" href="' . $modx->config['base_url'] . $plugin_base . '/style.css" />' . "\n");
-		$e->output('<script type="text/javascript" src="' . $modx->config['base_url'] . $plugin_base . '/src-min/ace.js"></script>' . "\n");
+		$e->output('<link rel="stylesheet" type="text/css" href="' . MODX_BASE_PATH . $plugin_base . '/style.css" />' . "\n");
+		$e->output('<script type="text/javascript" src="' . MODX_BASE_PATH . $plugin_base . '/src-min/ace.js"></script>' . "\n");
 		$e->output('<script type="text/javascript">' . "\n");
 		$e->output('(function() {' . "\n");
 		$e->output('var uilang = "' . addslashes($modx->config['manager_language']) . '";');
