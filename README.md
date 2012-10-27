@@ -1,5 +1,7 @@
 # ACE for MODX Evo
 
+![screenshot](https://raw.github.com/manse/ace.modx/master/screenshot.png)
+
 Add a rich text editor ACE for MODX Evo.
 
 ## Requirements
