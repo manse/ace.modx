@@ -70,7 +70,11 @@ outer.className = "ace_plugin_outer";
 var inner = document.createElement("div");
 inner.id = "ta_inner";
 inner.className = "ace_plugin_inner";
-inner.innerHTML = ta.value.split("    ").join("\t").split("<").join("&lt;").split(">").join("&gt;");
+
+var textdiv = document.createElement('div');
+textdiv.appendChild(document.createTextNode(ta.value));
+
+inner.innerHTML = textdiv.innerHTML;
 
 container.appendChild(outer);
 outer.appendChild(inner);
